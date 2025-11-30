@@ -211,13 +211,6 @@ export default function Home() {
         {/* Background with Dark Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/80" />
 
-        {/* Text Watermark */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="text-[20rem] font-heading font-bold text-white/[0.08] blur-[2px] select-none whitespace-nowrap">
-            SanctifAi
-          </div>
-        </div>
-
         {/* Abstract Light Aurora Background */}
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
