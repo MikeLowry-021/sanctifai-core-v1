@@ -239,21 +239,26 @@ export default function Home() {
                   </Badge>
                 </div>
 
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white drop-shadow-2xl">
-                  SanctifAi
-                </h1>
+                <div className="space-y-3">
+                  <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white drop-shadow-2xl leading-tight">
+                    SanctifAi
+                  </h1>
 
-                <p className="text-2xl md:text-3xl font-semibold text-white/95 drop-shadow-lg">
-                  Discern What You Watch
-                </p>
+                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white/95 drop-shadow-lg leading-tight">
+                    Discern What You Watch
+                  </h2>
+                </div>
 
-                <p className="text-lg md:text-xl text-white/80 max-w-xl lg:mx-0 mx-auto leading-relaxed">
-                  Get Scripture-guided discernment scores and faith-based insights for movies, TV shows, books, and songs.
+                <p className="text-lg md:text-xl text-white/80 max-w-2xl lg:mx-0 mx-auto leading-relaxed">
+                  Get Scripture-guided discernment scores and faith-based insights for movies, shows, books, and songs—before you hit play.
                 </p>
               </div>
 
-              <div className="pt-6">
+              <div className="pt-6 space-y-4">
                 <SearchBar onSearch={handleSearch} isLoading={isSearching} />
+                <p className="text-sm md:text-base text-white/70 max-w-2xl lg:mx-0 mx-auto leading-relaxed">
+                  <span className="font-medium text-white/90">How it works:</span> Search a title → SanctifAi analyzes themes, content, and Scripture alignment → you decide with confidence.
+                </p>
               </div>
             </motion.div>
 
