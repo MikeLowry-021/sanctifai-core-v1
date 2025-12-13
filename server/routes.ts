@@ -9,7 +9,7 @@ import { setupAuth, isAuthenticated } from "./replitAuth";
 import { logToMake } from "./makeLogger";
 import { fetchBookInfo } from "./utils/fetchBookInfo";
 import { searchiTunes } from "./utils/fetchMusicInfo";
-import { neon } from "@neondatabase/serverless";
+import { sql } from "./db";
 import { LyricsCache } from "./lyrics/index";
 import { MusixmatchProvider } from "./lyrics/musixmatch";
 import { LyricsOvhProvider } from "./lyrics/lyricsovh";
