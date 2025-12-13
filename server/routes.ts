@@ -9,7 +9,7 @@ import { setupAuth, isAuthenticated } from "./replitAuth";
 import { logToMake } from "./makeLogger";
 import { fetchBookInfo } from "./utils/fetchBookInfo";
 import { searchiTunes } from "./utils/fetchMusicInfo";
-import { sql } from "./db";
+import { neon } from "@neondatabase/serverless";
 import { LyricsCache } from "./lyrics/index";
 import { MusixmatchProvider } from "./lyrics/musixmatch";
 import { LyricsOvhProvider } from "./lyrics/lyricsovh";
@@ -49,8 +49,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { artist, title, rawLyrics } = validation.data;
 
       // Initialize cache
-      // FIX: Removed the local 'neon' connection. 
-      // We now use the 'sql' connection imported from "./db" at the top of the file.
+      const sql = neon(process.env.DATABASE_URL!);
       const cache = new LyricsCache(sql, 90);
 
       // Check cache first
