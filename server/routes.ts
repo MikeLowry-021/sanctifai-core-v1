@@ -29,6 +29,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
+  // QuickAuth: Guest-only authentication endpoint
+  // Always returns guest status (no authentication required)
+  app.get("/api/auth/user", (_req, res) => {
+    return res.json({
+      user: null,
+      isAuthenticated: false,
+    });
+  });
+
   // Lyrics analysis endpoint
   app.post("/api/analyze/lyrics", async (req, res) => {
     try {
@@ -260,15 +269,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       if (cached) {
         // Auto-save cached analysis to user's library if authenticated
-        if ((req as any).user?.id) {
+        if ((req as any).user?.claims?.sub) {
           try {
-            const userId = (req as any).user.id;
+            const userId = (req as any).user.claims.sub;
             await storage.saveAnalysis(userId, cached.id);
           } catch (saveError) {
             console.error("Failed to auto-save cached analysis to library:", saveError);
           }
         }
-
+        
         return res.json(toSearchResponse(cached));
       }
 
@@ -341,9 +350,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const saved = await storage.createAnalysis(insertData);
 
       // Auto-save to user's library if authenticated
-      if ((req as any).user?.id) {
+      if ((req as any).user?.claims?.sub) {
         try {
-          const userId = (req as any).user.id;
+          const userId = (req as any).user.claims.sub;
           await storage.saveAnalysis(userId, saved.id);
         } catch (saveError) {
           console.error("Failed to auto-save analysis to library:", saveError);
@@ -418,7 +427,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Saved analyses routes (require authentication)
   app.get("/api/saved-analyses", isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.id;
+      const userId = req.user.claims.sub;
       const savedAnalyses = await storage.getSavedAnalyses(userId);
       res.json(savedAnalyses.map(toSearchResponse));
     } catch (error) {
@@ -429,9 +438,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/saved-analyses/:analysisId", isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.id;
+      const userId = req.user.claims.sub;
       const { analysisId } = req.params;
-
+      
       // Check if analysis exists
       const analysis = await storage.getAnalysis(analysisId);
       if (!analysis) {
@@ -449,9 +458,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.delete("/api/saved-analyses/:analysisId", isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.id;
+      const userId = req.user.claims.sub;
       const { analysisId } = req.params;
-
+      
       await storage.unsaveAnalysis(userId, analysisId);
       res.json({ success: true });
     } catch (error) {
@@ -462,9 +471,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/saved-analyses/check/:analysisId", isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.id;
+      const userId = req.user.claims.sub;
       const { analysisId } = req.params;
-
+      
       const isSaved = await storage.isAnalysisSaved(userId, analysisId);
       res.json({ isSaved });
     } catch (error) {
