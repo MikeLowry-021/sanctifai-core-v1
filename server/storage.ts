@@ -140,13 +140,9 @@ export class MemStorage implements IStorage {
     const user: User = {
       id: userData.id || randomUUID(),
       email: userData.email || null,
-      googleId: userData.googleId || null,
       firstName: userData.firstName || null,
       lastName: userData.lastName || null,
       profileImageUrl: userData.profileImageUrl || null,
-      whatsappNumber: userData.whatsappNumber || null,
-      marketingConsent: userData.marketingConsent || null,
-      hasCompletedOnboarding: userData.hasCompletedOnboarding || null,
       createdAt: existingUser?.createdAt || now,
       updatedAt: now,
     };
