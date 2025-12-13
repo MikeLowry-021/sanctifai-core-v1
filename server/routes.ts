@@ -49,7 +49,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { artist, title, rawLyrics } = validation.data;
 
       // Initialize cache
-      const sql = neon(process.env.DATABASE_URL!);
+      // FIX: Removed the local 'neon' connection. 
+      // We now use the 'sql' connection imported from "./db" at the top of the file.
       const cache = new LyricsCache(sql, 90);
 
       // Check cache first
