@@ -1,4 +1,9 @@
 import { Switch, Route, useLocation } from "wouter";
+import { queryClient } from "./lib/queryClient";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { OnboardingModal } from "@/components/onboarding-modal";
@@ -59,20 +64,27 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-1">
-        <Router />
-      </main>
-      <Footer />
-      {showOnboarding && (
-        <OnboardingModal
-          open={showOnboarding}
-          onComplete={handleOnboardingComplete}
-          userName={user?.firstName}
-        />
-      )}
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider defaultTheme="light">
+        <TooltipProvider>
+          <div className="min-h-screen flex flex-col">
+            <Header />
+            <main className="flex-1">
+              <Router />
+            </main>
+            <Footer />
+          </div>
+          <Toaster />
+          {showOnboarding && (
+            <OnboardingModal
+              open={showOnboarding}
+              onComplete={handleOnboardingComplete}
+              userName={user?.firstName}
+            />
+          )}
+        </TooltipProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 
