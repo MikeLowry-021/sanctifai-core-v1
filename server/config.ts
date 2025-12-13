@@ -18,10 +18,6 @@ const envSchema = z.object({
   LYRICS_PROVIDER: z.string().optional(),
   MAKE_WEBHOOK_URL: z.string().optional(),
   PORT: z.string().optional(),
-  GOOGLE_CLIENT_ID: z.string().optional(),
-  GOOGLE_CLIENT_SECRET: z.string().optional(),
-  SESSION_SECRET: z.string().optional(),
-  BASE_URL: z.string().optional(),
 });
 
 // Parse and validate environment variables
@@ -41,10 +37,6 @@ export const config = {
   lyricsProvider: parsedEnv.data.LYRICS_PROVIDER || null,
   makeWebhookUrl: parsedEnv.data.MAKE_WEBHOOK_URL || null,
   port: parsedEnv.data.PORT || '5000',
-  googleClientId: parsedEnv.data.GOOGLE_CLIENT_ID || null,
-  googleClientSecret: parsedEnv.data.GOOGLE_CLIENT_SECRET || null,
-  sessionSecret: parsedEnv.data.SESSION_SECRET || 'development-secret-change-in-production',
-  baseUrl: parsedEnv.data.BASE_URL || 'http://localhost:5000',
 };
 
 // Log configuration summary
@@ -54,5 +46,4 @@ console.log("[Config] Loaded env:", {
   hasDatabase: !!config.databaseUrl,
   hasLyricsProvider: !!config.lyricsProvider,
   hasMakeWebhook: !!config.makeWebhookUrl,
-  hasGoogleOAuth: !!(config.googleClientId && config.googleClientSecret),
 });
