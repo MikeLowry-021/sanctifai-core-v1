@@ -123,11 +123,13 @@ export function Header() {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                      <a href="/api/auth/logout">
-                        <LogOut className="mr-2 h-4 w-4" />
-                        Sign Out
-                      </a>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        window.location.href = "/api/auth/logout";
+                      }}
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Sign Out
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -135,13 +137,13 @@ export function Header() {
                 <Button
                   variant="outline"
                   size="sm"
-                  asChild
+                  onClick={() => {
+                    window.location.href = "/api/auth/google";
+                  }}
                   className="bg-gradient-to-r from-amber-600 to-yellow-500 hover:from-amber-700 hover:to-yellow-600 text-white border-0"
                 >
-                  <a href="/api/auth/google">
-                    <LogIn className="mr-2 h-4 w-4" />
-                    Sign In with Google
-                  </a>
+                  <LogIn className="mr-2 h-4 w-4" />
+                  Sign In with Google
                 </Button>
               )}
             </>
