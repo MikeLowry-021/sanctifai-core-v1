@@ -70,21 +70,25 @@ In "faithAnalysis":
 }
 
 /**
- * Create an OpenAI client in a safe, lazy way.
+ * Create a Perplexity AI client using the OpenAI SDK (compatible API).
  * Returns null if API key is not available.
  */
-function getOpenAIClient(): OpenAI | null {
-  const apiKey = config.openaiApiKey;
+function getPerplexityClient(): OpenAI | null {
+  const apiKey = config.perplexityApiKey;
 
   if (!apiKey) {
     return null;
   }
 
-  return new OpenAI({ apiKey });
+  return new OpenAI({
+    apiKey,
+    baseURL: "https://api.perplexity.ai"
+  });
 }
 
 /**
- * Call OpenAI and parse the JSON response into our DiscernmentAnalysis type.
+ * Call Perplexity AI and parse the JSON response into our DiscernmentAnalysis type.
+ * Perplexity provides real-time web access for accurate, up-to-date media information.
  */
 export async function analyzeMedia(
   title: string,
@@ -92,7 +96,7 @@ export async function analyzeMedia(
   releaseYear?: string | null,
   overview?: string | null
 ): Promise<DiscernmentAnalysis> {
-  const client = getOpenAIClient();
+  const client = getPerplexityClient();
 
   if (!client) {
     return {
@@ -108,17 +112,17 @@ export async function analyzeMedia(
   const prompt = buildPrompt(title, mediaType, releaseYear, overview);
 
   console.log(
-    `[OpenAI] Analyzing media: "${title}" (${mediaType}), year=${releaseYear ?? "N/A"}`
+    `[Perplexity] Analyzing media: "${title}" (${mediaType}), year=${releaseYear ?? "N/A"}`
   );
 
   try {
     const completion = await client.chat.completions.create({
-      model: "gpt-4o",
+      model: "sonar-pro",
       messages: [
         {
           role: "system",
           content:
-            "You are a careful, concise Christian media discernment assistant. You speak with truth and grace.",
+            "You are an expert media analyst with real-time web access. Search for the specific title's parents guide, plot themes, and reviews before generating the discernment score. Be precise and cite sources.",
         },
         { role: "user", content: prompt },
       ],
@@ -132,8 +136,8 @@ export async function analyzeMedia(
     try {
       parsed = JSON.parse(raw);
     } catch (err) {
-      console.error("[OpenAI] Failed to parse JSON response");
-      throw new Error("Failed to parse OpenAI JSON response");
+      console.error("[Perplexity] Failed to parse JSON response");
+      throw new Error("Failed to parse Perplexity JSON response");
     }
 
     const result: DiscernmentAnalysis = {
@@ -154,7 +158,7 @@ export async function analyzeMedia(
 
     return result;
   } catch (error) {
-    console.error("[OpenAI] Error while analyzing media:", error);
+    console.error("[Perplexity] Error while analyzing media:", error);
 
     // Safe fallback so the UI can still render something
     return {
@@ -174,7 +178,7 @@ export async function analyzeMedia(
  * but exported to keep the original API surface.
  */
 export async function fetchIMDBData(title: string) {
-  console.log("[OpenAI] fetchIMDBData stub called for title:", title);
+  console.log("[Perplexity] fetchIMDBData stub called for title:", title);
 
   return {
     imdbRating: undefined,

@@ -24,7 +24,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/health", (_req, res) => {
     return res.json({
       status: "ok",
-      hasOpenAI: !!config.openaiApiKey,
+      hasPerplexity: !!config.perplexityApiKey,
       hasTMDB: !!config.tmdbApiKey,
     });
   });
@@ -313,8 +313,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Continue even if TMDB returns null - we'll use what we have
       }
 
-      // Analyze with OpenAI - pass enriched metadata for accurate identification
-      // OpenAI will return fallback analysis if API key is missing (service-unavailable tag)
+      // Analyze with Perplexity AI - pass enriched metadata for accurate identification
+      // Perplexity provides real-time web access for current movie/show data and reviews
+      // Will return fallback analysis if API key is missing (service-unavailable tag)
       const analysis = await analyzeMedia(title, mediaType, finalReleaseYear, finalDescription);
 
       // Accept any analysis result, including fallback responses
