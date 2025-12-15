@@ -11,7 +11,7 @@ dotenv.config({ path: path.join(__dirname, "..", ".env") });
 
 // Define Zod schema for environment variables
 const envSchema = z.object({
-  PERPLEXITY_API_KEY: z.string().optional(),
+  OPENAI_API_KEY: z.string().optional(),
   TMDB_API_KEY: z.string().optional(),
   DATABASE_URL: z.string().optional(),
   LYRICS_API_KEY: z.string().optional(),
@@ -34,7 +34,7 @@ if (!parsedEnv.success) {
 
 // Export typed config object
 export const config = {
-  perplexityApiKey: parsedEnv.data.PERPLEXITY_API_KEY || null,
+  openaiApiKey: parsedEnv.data.OPENAI_API_KEY || null,
   tmdbApiKey: parsedEnv.data.TMDB_API_KEY || null,
   databaseUrl: parsedEnv.data.DATABASE_URL || null,
   lyricsApiKey: parsedEnv.data.LYRICS_API_KEY || null,
@@ -49,7 +49,7 @@ export const config = {
 
 // Log configuration summary
 console.log("[Config] Loaded env:", {
-  hasPerplexity: !!config.perplexityApiKey,
+  hasOpenAI: !!config.openaiApiKey,
   hasTMDB: !!config.tmdbApiKey,
   hasDatabase: !!config.databaseUrl,
   hasLyricsProvider: !!config.lyricsProvider,
