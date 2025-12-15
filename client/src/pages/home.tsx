@@ -270,11 +270,6 @@ export default function Home() {
               className="hidden lg:block lg:col-span-5"
             >
               <div className="relative">
-                {/* Glow effect behind card */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-chart-2/20 to-transparent rounded-3xl blur-3xl" />
-
-                {/* Preview Card */}
-                <div className="relative bg-background/10 backdrop-blur-xl rounded-3xl border-2 border-white/20 p-8 shadow-2xl">
                   <div className="space-y-6">
                     {/* Mini Score Display */}
                     <div className="flex flex-col items-center">
@@ -314,12 +309,11 @@ export default function Home() {
                     </div>
 
                     {/* Sample Title */}
-                    <div className="text-center space-y-2 border-t border-white/10 pt-6">
+                    <div className="text-center space-y-2 pt-6">
                       <p className="text-white/90 font-medium">Instant Analysis</p>
                       <p className="text-sm text-white/60">Scripture-guided insights for every title</p>
                     </div>
                   </div>
-                </div>
               </div>
             </motion.div>
           </div>

@@ -70,21 +70,25 @@ In "faithAnalysis":
 }
 
 /**
- * Create an OpenAI client in a safe, lazy way.
+ * Create an OpenAI client configured for MegaLLM.
  * Returns null if API key is not available.
  */
 function getOpenAIClient(): OpenAI | null {
-  const apiKey = config.openaiApiKey;
+  const apiKey = config.openaiApiKey; // This is your sk-mega-... key
 
   if (!apiKey) {
     return null;
   }
 
-  return new OpenAI({ apiKey });
+  // UPDATED: Added baseURL for MegaLLM compatibility
+  return new OpenAI({ 
+    apiKey,
+    baseURL: "https://ai.megallm.io/v1" 
+  });
 }
 
 /**
- * Call OpenAI and parse the JSON response into our DiscernmentAnalysis type.
+ * Call MegaLLM (via OpenAI SDK) and parse the JSON response.
  */
 export async function analyzeMedia(
   title: string,
@@ -108,12 +112,12 @@ export async function analyzeMedia(
   const prompt = buildPrompt(title, mediaType, releaseYear, overview);
 
   console.log(
-    `[OpenAI] Analyzing media: "${title}" (${mediaType}), year=${releaseYear ?? "N/A"}`
+    `[MegaLLM] Analyzing media: "${title}" (${mediaType}), year=${releaseYear ?? "N/A"}`
   );
 
   try {
     const completion = await client.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-4o", // MegaLLM accepts this model name
       messages: [
         {
           role: "system",
@@ -132,8 +136,8 @@ export async function analyzeMedia(
     try {
       parsed = JSON.parse(raw);
     } catch (err) {
-      console.error("[OpenAI] Failed to parse JSON response");
-      throw new Error("Failed to parse OpenAI JSON response");
+      console.error("[MegaLLM] Failed to parse JSON response");
+      throw new Error("Failed to parse MegaLLM JSON response");
     }
 
     const result: DiscernmentAnalysis = {
@@ -154,7 +158,7 @@ export async function analyzeMedia(
 
     return result;
   } catch (error) {
-    console.error("[OpenAI] Error while analyzing media:", error);
+    console.error("[MegaLLM] Error while analyzing media:", error);
 
     // Safe fallback so the UI can still render something
     return {
@@ -170,11 +174,10 @@ export async function analyzeMedia(
 }
 
 /**
- * Placeholder IMDB fetcher – not used by routes yet,
- * but exported to keep the original API surface.
+ * Placeholder IMDB fetcher
  */
 export async function fetchIMDBData(title: string) {
-  console.log("[OpenAI] fetchIMDBData stub called for title:", title);
+  console.log("[MegaLLM] fetchIMDBData stub called for title:", title);
 
   return {
     imdbRating: undefined,
