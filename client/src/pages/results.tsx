@@ -280,7 +280,7 @@ export default function Results() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <Card className="rounded-2xl border-2 bg-gradient-to-br from-background to-muted/20">
+              <Card className="rounded-2xl">
                 <CardContent className="pt-6 pb-6 flex justify-center">
                   <DiscernmentScore score={data.discernmentScore} />
                 </CardContent>
@@ -293,7 +293,7 @@ export default function Results() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <Card className="rounded-2xl border-2">
+              <Card className="rounded-2xl">
                 <CardContent className="card-padding content-spacing">
                   <h2 className="heading-3">
                     Content Analysis
